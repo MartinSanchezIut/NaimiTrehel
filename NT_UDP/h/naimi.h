@@ -64,15 +64,16 @@ int EnvoyerMessage(int socket, struct sockaddr_in dest, message msg){
 }
 
 int EnvoyerToken(pthread_mutex_t* jeton, int socket, struct sockaddr_in dest){
-    pthread_mutex_lock(&jeton);
+    pthread_mutex_unlock(jeton);
     message msg;
-    msg.type  = 1;
+    msg.type  = 1; memset(&msg, 0, sizeof(msg));
     //msg.contenu = NULL;
     int nbSend = sendto(socket, &msg, sizeof(msg), 0, (struct sockaddr*) &dest, sizeof(dest)) ;
     if(nbSend < 0 ){
         perror("sendto() error: ");
         return -1;
     }
+    pthread_mutex_lock(jeton);
     return nbSend;
 }
 
@@ -87,7 +88,7 @@ pthread_mutex_t initToken(struct sockaddr_in me, struct sockaddr_in pere) {
     return jeton;
 }
 
-int attendreToken(pthread_mutex_t* jeton) {
+void attendreToken(pthread_mutex_t* jeton) {
     pthread_mutex_lock(jeton);
 }
 
@@ -95,7 +96,12 @@ struct sockaddr_in getSockAddr(char ip[], int port) {
     struct sockaddr_in myaddr;
     myaddr.sin_family = AF_INET;
     myaddr.sin_port = htons(port);
-    inet_aton(ip, &myaddr.sin_addr.s_addr); 
+    // Warning ici !
+    //inet_aton(ip, &myaddr.sin_addr.s_addr);
+
+    if (inet_pton(AF_INET, ip, &(myaddr.sin_addr)) < 1)	{
+		perror("client: inet_pton() error ->");
+	} 
     return myaddr;
 }
 

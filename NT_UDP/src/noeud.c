@@ -52,7 +52,7 @@ void * ecoute (void * params){
 
     // Petit bout de code pour que "AttendreMessage" ne bloque pas infiniment, Timeout = 60sec
     struct timeval tv;
-    tv.tv_sec = 120;
+    tv.tv_sec = 20;
     tv.tv_usec = 0;
     if (setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO,&tv,sizeof(tv)) < 0) {
         printf("    Ecoute: delai d'attente expire\n");
@@ -196,6 +196,7 @@ int main(int argc, char *argv[]) {
 
     // Permet de mettre fin a la boucle du thread d'ecoute
     condBoucle = 1;
+    printf("Fin du programme .. \n");
     pthread_join(t_ecoute, NULL);
     exit(EXIT_SUCCES);
 }
