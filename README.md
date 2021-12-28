@@ -9,9 +9,19 @@ Ce dépot contient 3 projet:
 
 
 Pour executer un de ces 3 projets:
-./<projet>/exemple/tester.sh
+cd <projet>
+./exemple/tester.sh
 
 Script qui permet de lancer 4 terminaux et montre le déroulement de l'algorithme
+
+
+A noter qu'il est possible de créer un profil de terminal : "test" et selectionner
+"Hold the terminal open" à "When command exits" dans l'onglet "Command".
+
+
+Cela permet de ne pas fermer la terminal quand le programe termine, on pourra donc
+lire les print des différents noeuds.
+
 
 Un makefile est fourni pour chaque projet
 
