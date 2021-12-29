@@ -265,24 +265,19 @@ int main(int argc, char *argv[]) {
                 struct sockaddr_in suivant = pop(next) ;
                 if (TRACE) {printf("     Main : mon next est %s:%d.\n", inet_ntoa(suivant.sin_addr), ntohs(suivant.sin_port));}
                 
-                printf("0\n");
 
                 close(sock);
-                printf("1\n");
                 if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0 ) {
                     perror("Erreur socket d'envoi:"); exit(SOCKET_ERROR);}
                 
-                printf("2\n");
  
                 if (connect(sock, (struct sockaddr *)&suivant, sizeof(suivant)) <0) {
                     perror("connect sendtoken: ");
                     close(sock); exit(CONNECT_ERROR);}
 
-                printf("3\n");
 
                 EnvoyerToken(&jeton, sock, suivant);
 
-                printf("4\n");
 
             }else {
                 printf("Je n'ai pas de next ... \n");
@@ -311,24 +306,19 @@ int main(int argc, char *argv[]) {
                 struct sockaddr_in suivant = pop(next) ;
                 if (TRACE) {printf("     Main : mon next est %s:%d.\n", inet_ntoa(suivant.sin_addr), ntohs(suivant.sin_port));}
                 
-                printf("0\n");
 
                 close(sock);
-                printf("1\n");
                 if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0 ) {
                     perror("Erreur socket d'envoi:"); exit(SOCKET_ERROR);}
                 
-                printf("2\n");
  
                 if (connect(sock, (struct sockaddr *)&suivant, sizeof(suivant)) <0) {
                     perror("connect sendtoken: ");
                     close(sock); exit(CONNECT_ERROR);}
 
-                printf("3\n");
 
                 EnvoyerToken(&jeton, sock, suivant);
 
-                printf("4\n");
 
             }else {
                 printf("Je n'ai pas de next ... \n");

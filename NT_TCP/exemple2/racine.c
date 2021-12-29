@@ -282,46 +282,75 @@ int main(int argc, char *argv[]) {
             }else {
                 printf("Je n'ai pas de next ... \n");
             }
-   
-            message msg;
-            msg.type = 0;
-            msg.contenu = getSockAddr("127.0.0.1", atoi(argv[3]));
 
-            close(sock);
-            if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0 ) {
-                perror("Erreur socket d'envoi:"); exit(SOCKET_ERROR);}
-            if (connect(sock, (struct sockaddr *)&pere, sizeof(pere)) <0) {
-                perror("connect demande racine: ");
-                close(sock); exit(CONNECT_ERROR);}
-            EnvoyerMessage(sock, pere, msg)  ;
+            char str[100];
+            for (int i = 0; i< 3; i++) {
+                printf("\nAppuiyez sur [ENTRER] pour demander le jeton : \n\n");
+                scanf("%s", str);
 
-            
-
-            attendreToken(&jeton);
-            printf("%ld - Main : Je commence mon calcul !\n", getTime() ) ;
-            calcul(5);
-            printf("%ld - Main : Je termine mon calcul !\n", getTime() );
-             
-            if (!isEmpty(next)) {
-                struct sockaddr_in suivant = pop(next) ;
-                if (TRACE) {printf("     Main : mon next est %s:%d.\n", inet_ntoa(suivant.sin_addr), ntohs(suivant.sin_port));}
-                
+    
+                message msg;
+                msg.type = 0;
+                msg.contenu = getSockAddr("127.0.0.1", atoi(argv[3]));
 
                 close(sock);
                 if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0 ) {
                     perror("Erreur socket d'envoi:"); exit(SOCKET_ERROR);}
-                
- 
-                if (connect(sock, (struct sockaddr *)&suivant, sizeof(suivant)) <0) {
-                    perror("connect sendtoken: ");
+                if (connect(sock, (struct sockaddr *)&pere, sizeof(pere)) <0) {
+                    perror("connect demande racine: ");
                     close(sock); exit(CONNECT_ERROR);}
+                EnvoyerMessage(sock, pere, msg)  ;
+
+                
+
+                attendreToken(&jeton);
+                printf("%ld - Main : Je commence mon calcul !\n", getTime() ) ;
+                calcul(5);
+                printf("%ld - Main : Je termine mon calcul !\n", getTime() );
+                
+                if (!isEmpty(next)) {
+                    struct sockaddr_in suivant = pop(next) ;
+                    if (TRACE) {printf("     Main : mon next est %s:%d.\n", inet_ntoa(suivant.sin_addr), ntohs(suivant.sin_port));}
+                    
+
+                    close(sock);
+                    if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0 ) {
+                        perror("Erreur socket d'envoi:"); exit(SOCKET_ERROR);}
+                    
+    
+                    if (connect(sock, (struct sockaddr *)&suivant, sizeof(suivant)) <0) {
+                        perror("connect sendtoken: ");
+                        close(sock); exit(CONNECT_ERROR);}
 
 
-                EnvoyerToken(&jeton, sock, suivant);
+                    EnvoyerToken(&jeton, sock, suivant);
 
 
-            }else {
-                printf("Je n'ai pas de next ... \n");
+                }else {
+                    printf("Je n'ai pas de next ... \n");
+                    printf("Du coup je boucle ..... \n");
+                    
+                    while(isEmpty(next)) {
+                        sleep(2) ;
+                    }
+
+                    struct sockaddr_in suivant = pop(next) ;
+                    if (TRACE) {printf("     Main : mon next est %s:%d.\n", inet_ntoa(suivant.sin_addr), ntohs(suivant.sin_port));}
+                    
+
+                    close(sock);
+                    if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0 ) {
+                        perror("Erreur socket d'envoi:"); exit(SOCKET_ERROR);}
+                    
+    
+                    if (connect(sock, (struct sockaddr *)&suivant, sizeof(suivant)) <0) {
+                        perror("connect sendtoken: ");
+                        close(sock); exit(CONNECT_ERROR);}
+
+
+                    EnvoyerToken(&jeton, sock, suivant);
+
+                }
             }
 
 
