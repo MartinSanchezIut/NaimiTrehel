@@ -5,11 +5,3 @@ sleep 1
 gnome-terminal -e "./exemple/noeud 127.0.0.1 12345 12343"  --window-with-profile=test
 sleep 1
 gnome-terminal -e "./exemple/noeud 127.0.0.1 12345 12342"  --window-with-profile=test
-
-
-sleep 1
-gnome-terminal -e "./exemple/noeud 127.0.0.1 12345 12341"  --window-with-profile=test
-sleep 1
-gnome-terminal -e "./exemple/noeud 127.0.0.1 12345 12340"  --window-with-profile=test
-sleep 1
-gnome-terminal -e "./exemple/noeud 127.0.0.1 12345 12339"  --window-with-profile=test
