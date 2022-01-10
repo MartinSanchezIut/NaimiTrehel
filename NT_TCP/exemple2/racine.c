@@ -280,8 +280,30 @@ int main(int argc, char *argv[]) {
 
 
             }else {
-                printf("Je n'ai pas de next ... \n");
-            }
+                    printf("Je n'ai pas de next ... \n");
+                    printf("Du coup je boucle ..... \n");
+                    
+                    while(isEmpty(next)) {
+                        sleep(2) ;
+                    }
+
+                    struct sockaddr_in suivant = pop(next) ;
+                    if (TRACE) {printf("     Main : mon next est %s:%d.\n", inet_ntoa(suivant.sin_addr), ntohs(suivant.sin_port));}
+                    
+
+                    close(sock);
+                    if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0 ) {
+                        perror("Erreur socket d'envoi:"); exit(SOCKET_ERROR);}
+                    
+    
+                    if (connect(sock, (struct sockaddr *)&suivant, sizeof(suivant)) <0) {
+                        perror("connect sendtoken: ");
+                        close(sock); exit(CONNECT_ERROR);}
+
+
+                    EnvoyerToken(&jeton, sock, suivant);
+
+                }
 
             char str[100];
             for (int i = 0; i< 3; i++) {
